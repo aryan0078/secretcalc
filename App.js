@@ -16,6 +16,7 @@ const firebaseConfig={
 
 
 export const Firebase = firebase.initializeApp(firebaseConfig);
+export const db=Firebase.database()
 Firebase.auth().signInAnonymously()
 
 export default class Home extends Component {

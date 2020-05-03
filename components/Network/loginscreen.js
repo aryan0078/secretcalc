@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { AppState, View, Text, StyleSheet, Alert } from 'react-native';
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import { colors } from 'react-native-elements';
-import {Firebase} from '../../App'
+import {db} from '../../App'
 import ChatScreen from './chatscreen'
 
 export default class LoginScreen extends PureComponent {
@@ -38,7 +38,7 @@ this.username=this.username.bind(this)
 username=()=>{
   
     
- Firebase.database().ref('users').push({username:this.state.username})
+ db.ref('users').push({username:this.state.username})
  this.setState({login:true})
 }
 
