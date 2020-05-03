@@ -3,7 +3,7 @@ import { AppState, View, Text, StyleSheet, Alert } from 'react-native';
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import { colors } from 'react-native-elements';
 import {Firebase} from '../../App'
-
+import ChatScreen from './chatscreen'
 
 export default class LoginScreen extends PureComponent {
   constructor(props) {
@@ -12,7 +12,8 @@ this.username=this.username.bind(this)
     this.state = {
       username:'',
       appState:AppState.currentState,
-      network:true
+      network:true,
+      login:false,
     };
   }
   componentDidMount() {
@@ -38,12 +39,15 @@ username=()=>{
   
     
  Firebase.database().ref('users').push({username:this.state.username})
- 
+ this.setState({login:true})
 }
 
   render() 
  
   {
+    if(this.state.login){
+      return(<ChatScreen username={this.state.username}/>)
+    }
     if (this.state.network==false){
       return <Home/>
     }

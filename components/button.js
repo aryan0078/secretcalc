@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 import { TouchableOpacity,AppRegistry, Dimensions,StyleSheet, FlatList, Text, View, Alert, Platform } from 'react-native';
 import LoginScreen from './Network/loginscreen';
 
-const HEIGHT=Dimensions.get('screen').height
-const WIDTH=Dimensions.get('screen').width
+export const HEIGHT=Dimensions.get('screen').height
+export const WIDTH=Dimensions.get('screen').width
 
 export default class CalcButton extends Component {
  
