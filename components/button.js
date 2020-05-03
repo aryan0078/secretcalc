@@ -2,16 +2,10 @@ import React, { Component } from 'react';
 
 import { TouchableOpacity,AppRegistry, Dimensions,StyleSheet, FlatList, Text, View, Alert, Platform } from 'react-native';
 import LoginScreen from './Network/loginscreen';
-import * as firebase from 'firebase'
+
 const HEIGHT=Dimensions.get('screen').height
-//const WIDTH=Dimensions.get('screen').width
-//const firebaseConfig={
- // apiKey:"",
-  //authDomain:"",
-  //databaseURL:"",
-  //storageBucket:""
-//}
-//firebase.initializeApp(firebaseConfig);
+const WIDTH=Dimensions.get('screen').width
+
 export default class CalcButton extends Component {
  
  constructor(props)
@@ -41,12 +35,12 @@ export default class CalcButton extends Component {
  }
  
  GetGridViewItem= (item)=> {
-   if (this.state.calculation=="9415701159"){
+   if (this.state.calculation=="959"){
    
    
    }
    if(item=="="){
-    if (this.state.calculation=="9415701159"){
+    if (this.state.calculation=="959"){
       this.setState({network:true})
     
     }
@@ -114,7 +108,8 @@ MainContainer :{
 },
  
 GridViewBlockStyle: {
-backgroundColor:'red',
+backgroundColor:'#282828',
+
   justifyContent: 'center',
   flex:1,
   alignItems: 'center',
@@ -127,7 +122,7 @@ backgroundColor:'red',
 ,
  
 GridViewInsideTextItemStyle: {
- fontFamily:'Sans',
+
    color: '#fff',
    padding: 10,
    fontSize: 18,
