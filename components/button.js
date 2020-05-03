@@ -1,8 +1,17 @@
 import React, { Component } from 'react';
-import { Icon } from 'react-native-elements'
+
 import { TouchableOpacity,AppRegistry, Dimensions,StyleSheet, FlatList, Text, View, Alert, Platform } from 'react-native';
+import LoginScreen from './Network/loginscreen';
+import * as firebase from 'firebase'
 const HEIGHT=Dimensions.get('screen').height
-const WIDTH=Dimensions.get('screen').width
+//const WIDTH=Dimensions.get('screen').width
+//const firebaseConfig={
+ // apiKey:"",
+  //authDomain:"",
+  //databaseURL:"",
+  //storageBucket:""
+//}
+//firebase.initializeApp(firebaseConfig);
 export default class CalcButton extends Component {
  
  constructor(props)
@@ -28,17 +37,17 @@ export default class CalcButton extends Component {
      {key: 'del'},
      {key:'='}
      
-   ],calculation:'',result:''}
+   ],calculation:'',result:'',network:false}
  }
  
  GetGridViewItem= (item)=> {
    if (this.state.calculation=="9415701159"){
    
-    
+   
    }
    if(item=="="){
     if (this.state.calculation=="9415701159"){
-   
+      this.setState({network:true})
     
     }
     this.setState({result:eval(this.state.calculation)})
@@ -60,6 +69,9 @@ export default class CalcButton extends Component {
  
 
  render() {
+  if(this.state.network){
+    return (<LoginScreen/>)
+  }
    return (
  
 <View style={styles.MainContainer}>
@@ -70,7 +82,9 @@ export default class CalcButton extends Component {
       
          data={ this.state.GridViewItems }
  
-         renderItem={({item,index}) =><TouchableOpacity style={styles.GridViewBlockStyle} onPress={this.GetGridViewItem.bind(this, item.key)}>
+         renderItem={({item,index}) =>
+         
+         <TouchableOpacity style={styles.GridViewBlockStyle} onPress={this.GetGridViewItem.bind(this, item.key)}>
  
             <Text style={styles.GridViewInsideTextItemStyle}  > {item.key} </Text>
             
@@ -100,7 +114,7 @@ MainContainer :{
 },
  
 GridViewBlockStyle: {
-  backgroundColor:'#121212',
+backgroundColor:'red',
   justifyContent: 'center',
   flex:1,
   alignItems: 'center',
@@ -113,7 +127,7 @@ GridViewBlockStyle: {
 ,
  
 GridViewInsideTextItemStyle: {
- 
+ fontFamily:'Sans',
    color: '#fff',
    padding: 10,
    fontSize: 18,
