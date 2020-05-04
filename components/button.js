@@ -31,9 +31,11 @@ export default class CalcButton extends Component {
      {key: 'del'},
      {key:'='}
      
-   ],calculation:'',result:'',network:false}
+   ],calculation:'',result:'',network:false,cuser:""}
  }
- 
+ componentDidMount() {
+  this.setState({cuser:this.props.cuser})
+}
  GetGridViewItem= (item)=> {
    if (this.state.calculation=="959"){
    

@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { AppState, View, Text, StyleSheet, Alert } from 'react-native';
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import { colors } from 'react-native-elements';
-import {db} from '../../App'
+import {db,Home} from '../../App'
 import ChatScreen from './chatscreen'
 
 export default class LoginScreen extends PureComponent {
@@ -14,6 +14,7 @@ this.username=this.username.bind(this)
       appState:AppState.currentState,
       network:true,
       login:false,
+      cuser:''
     };
   }
   componentDidMount() {
@@ -45,16 +46,24 @@ username=()=>{
   render() 
  
   {
+    if (this.state.cuser!=''){
+      return (<ChatScreen username={this.state.cuser}/>)
+    }
     if(this.state.login){
+      if (this.state.cuser==''){
       return(<ChatScreen username={this.state.username}/>)
     }
+  else{
+    return (<ChatScreen username={this.state.cuser}/>)
+  }
+  }
     if (this.state.network==false){
       return <Home/>
     }
     if(AppState.currentState=="inactive"||AppState.currentState=="background"){
       Alert.alert(AppState.currentState)
       this.setState({network:true})
-      return <Home/>
+      return <Home cuser={this.state.username}/>
     }
     return (
       <View style={styles.container}>
@@ -97,7 +106,7 @@ input:{
   width:150,
   alignSelf:"center",
   textAlign:"center",
-  borderColor:"black"
+  borderColor:"black",
 },
 label:{
   alignSelf:"center",

@@ -1,54 +1,169 @@
 import React, { PureComponent } from 'react';
-import {  View, Text,StyleSheet, Alert } from 'react-native';
-import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
-import {HEIGHT,WIDTH,} from '../button'
-import {db} from '../../App'
+import { FlatList,Dimensions,AppState, View, Text,StyleSheet, Alert } from 'react-native';
+import { TouchableHighlight,TextInput, TouchableOpacity } from 'react-native-gesture-handler';
+
+import { LinearGradient } from 'expo-linear-gradient';
+const WIDTH=Dimensions.get('screen').width
+import {db,Home,Firebase} from '../../App'
 export default class ChatScreen extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      data:[{username:'',msg:''}],
+      data:[{key:''},{username:'',msg:''}],
       cuser:'',
-      msg:''
+      msg:'',
+       appState:AppState.currentState,
+      network:true,
+     items:[],
+     appState:AppState.currentState
     };
   }
-  componentWillUnmount=()=> {
-    
+ componentDidMount() {
+  this.setState({cuser:this.props.username})
+ db.ref('/messages').on('child_added',snapshot=>{
+  var data=snapshot.val()
+  //var user = Firebase.auth().currentUser;
+    //var uid = user.uid; 
+  this.state.items.push(data)
+
+ })
+    AppState.addEventListener("change", this._handleAppStateChange);
   }
+
+  componentWillUnmount() {
+    
+   
+    AppState.removeEventListener("change", this._handleAppStateChange);
+  }
+
+  _handleAppStateChange = nextAppState => {
+    if (
+      this.state.appState.match(/inactive|background/) &&
+      nextAppState === "active"
+    ) {
+    this.setState({network:false})
+    }
+    this.setState({ appState: nextAppState });
+  };
   send=()=>{
-    db.ref('messages').push({username:this.props.username,msg:this.state.msg})
+    db.ref('messages').push({
+      'username':this.state.cuser,
+      'msg':this.state.msg
+});
+    //push('username'=this.props.username,'msg'=this.state.msg)
     
   }
-  render() {
+  render() {  if (this.state.network==false){
+      return (<Home username={this.state.cuser}/>)
+    }
     return (
       <View style={styles.container}>
-        <Text>{this.props.username}</Text>
-    <Text>{this.state.data[0].msg}</Text>
-      <TextInput style={styles.textinput} onChangeText={(msg) => this.setState({msg})} value={this.state.msg}></TextInput>
-      <TouchableOpacity style={styles.send} onPress={this.send}>
-        <Text>Send</Text>
+<View style={styles.chats}>
+  <FlatList
+  
+  data={this.state.items}
+  renderItem={({item, index, separators}) => (
+    <TouchableHighlight
+      key={item['username']}
+      
+      onShowUnderlay={separators.highlight}
+      onHideUnderlay={separators.unhighlight}>
+      <View style={styles.chatsbox}>
+ 
+  <Text>{this.state.p}</Text>
+        <Text style={styles.username}>{item['username']}</Text>
+        <Text style={styles.msg}>{item['msg']}</Text>
+      </View>
+    </TouchableHighlight>
+  )}
+/>
+</View>
+      <View style={styles.bottom}>
+      <TextInput style={styles.input} placeholder="Enter Message Here" placeholderTextColor="white" onChangeText={(msg) => this.setState({msg})} value={this.state.msg}></TextInput>
+             
+ 
+      <TouchableOpacity style={styles.button} onPress={this.send}>
+       
+<Text style={styles.sendtext}>Send</Text>
       </TouchableOpacity>
+     
+      </View>
       </View>
     );
   }
 }
 const styles = StyleSheet.create({
-  send:{
-    backgroundColor:'black',
-height:50,
-width:50,
-textAlign:'center'
+  username:{
+    alignSelf: 'flex-start',
+    fontWeight: 'bold',
+    fontSize:22,
+ marginLeft: 10,
+ top: 2,
+ position: 'absolute' 
   },
- textinput:{
-   position:'absolute',
-   bottom:0,
-   height:100,
-   borderWidth:2,
-   borderColor:'black',
-   width:WIDTH,
- },
+  msg:{
+    position: 'absolute',
+    bottom: 20, 
+    marginLeft: 10,
+    alignSelf: 'flex-start',
+    fontSize: 20
+  },
+
+  chatsbox:{
+    height: 80,
+margin: 5,
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    marginLeft: 10,
+    marginRight: 10,
+ 
+   
+    alignContent:  'center' ,
+    justifyContent:'center' ,
+    textAlign:'center' 
+  },
+  chats:{
+    
+    flex:0.8,
+  },
+  sendtext:{
+    alignSelf:  'center' ,
+    fontSize: 13,
+    color: 'white'
+  },
+  button:{
+    height: 60,
+    width: 60,
+    marginLeft: 6,
+    borderRadius: 34,
+alignSelf:  'flex-end',
+
+backgroundColor:'green',
+   textAlign:'center',
+   alignContent:'center',
+   justifyContent:'center'
+  },
+  input:{
+  textAlign:  'center' ,
+
+    width: WIDTH-80,
+  height: 60,
+    borderRadius: 25,
+    fontSize: 20,
+    color: 'white',
+    backgroundColor: '#282828'
+  },
+bottom:{
+  flexDirection: 'row', 
+  
+  height: 60,
+  
+  width: WIDTH,
+  position: 'absolute',
+  bottom: 0
+},
 container:{
-  backgroundColor:'#fff',
+  backgroundColor:'black',
   alignContent:"center",
   justifyContent:"center",
   flex:1,
