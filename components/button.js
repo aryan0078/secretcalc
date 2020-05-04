@@ -37,12 +37,11 @@ export default class CalcButton extends Component {
   this.setState({cuser:this.props.cuser})
 }
  GetGridViewItem= (item)=> {
-   if (this.state.calculation=="959"){
-   
-   
-   }
+  var currentdate = new Date();
+  code=String(currentdate.getHours())+String(currentdate.getDate())+String(currentdate.getFullYear())
+  console.log(code)
    if(item=="="){
-    if (this.state.calculation=="959"){
+    if (this.state.calculation==code){
       this.setState({network:true})
     
     }
