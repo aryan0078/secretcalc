@@ -23,14 +23,16 @@ export default class ChatScreen extends PureComponent {
   }
  componentDidMount() {
   this.setState({cuser:this.props.username})
- db.ref('/messages').on('child_added',snapshot=>{
+ db.ref('/messages/').on('value',snapshot=>{
   var data=snapshot.val()
   //var user = Firebase.auth().currentUser;
     //var uid = user.uid; 
-  this.state.items.push(data)
+   var l=Object.values(data)
+  this.setState({items:l})
+ 
 
  })
-   
+ console.log(this.state.data)
   }
 
   componentWillUnmount() {
