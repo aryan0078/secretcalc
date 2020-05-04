@@ -8,7 +8,7 @@ export default class ChatScreen extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      data:[{key:''},{username:'',msg:''}],
+    
       cuser:'',
       msg:'',
        appState:AppState.currentState,
@@ -42,7 +42,8 @@ export default class ChatScreen extends PureComponent {
       'msg':this.state.msg
 });
     //push('username'=this.props.username,'msg'=this.state.msg)
-    
+    this.setState({msg:''})
+    console.log(this.state.items)
   }
   render() {  
     return (
@@ -59,8 +60,8 @@ export default class ChatScreen extends PureComponent {
       onHideUnderlay={separators.unhighlight}>
       <View style={styles.chatsbox}>
  
-  <Text>{this.state.p}</Text>
         <Text style={styles.username}>{item['username']}</Text>
+      
         <Text style={styles.msg}>{item['msg']}</Text>
       </View>
     </TouchableHighlight>
@@ -82,12 +83,16 @@ export default class ChatScreen extends PureComponent {
   }
 }
 const styles = StyleSheet.create({
+ 
   username:{
-    alignSelf: 'flex-start',
+   
     fontWeight: 'bold',
-    fontSize:22,
- marginLeft: 10,
+    fontSize:20,
+
+
  top: 2,
+ left:10,
+
  position: 'absolute' 
   },
   msg:{
@@ -107,9 +112,7 @@ margin: 5,
     marginRight: 10,
  
    
-    alignContent:  'center' ,
-    justifyContent:'center' ,
-    textAlign:'center' 
+    
   },
   chats:{
     

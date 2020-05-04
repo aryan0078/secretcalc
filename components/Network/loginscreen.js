@@ -38,6 +38,9 @@ username=()=>{
   render() 
  
   {
+    if (this.state.login){
+      return <ChatScreen username={this.state.username}/>
+    }
     return (
       <View style={styles.container}>
 <Text></Text>
