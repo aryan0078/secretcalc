@@ -18,24 +18,16 @@ this.username=this.username.bind(this)
     };
   }
   componentDidMount() {
-    AppState.addEventListener("change", this._handleAppStateChange);
+   
   }
 
   componentWillUnmount() {
     
    
-    AppState.removeEventListener("change", this._handleAppStateChange);
+  
   }
 
-  _handleAppStateChange = nextAppState => {
-    if (
-      this.state.appState.match(/inactive|background/) &&
-      nextAppState === "active"
-    ) {
-    this.setState({network:false})
-    }
-    this.setState({ appState: nextAppState });
-  };
+ 
 username=()=>{
   
     
@@ -46,25 +38,6 @@ username=()=>{
   render() 
  
   {
-    if (this.state.cuser!=''){
-      return (<ChatScreen username={this.state.cuser}/>)
-    }
-    if(this.state.login){
-      if (this.state.cuser==''){
-      return(<ChatScreen username={this.state.username}/>)
-    }
-  else{
-    return (<ChatScreen username={this.state.cuser}/>)
-  }
-  }
-    if (this.state.network==false){
-      return <Home/>
-    }
-    if(AppState.currentState=="inactive"||AppState.currentState=="background"){
-      Alert.alert(AppState.currentState)
-      this.setState({network:true})
-      return <Home cuser={this.state.username}/>
-    }
     return (
       <View style={styles.container}>
 <Text></Text>
@@ -75,7 +48,7 @@ username=()=>{
         </TouchableOpacity>
       </View>
     );
-  }
+    }
 }
 const styles = StyleSheet.create({
   btext:{

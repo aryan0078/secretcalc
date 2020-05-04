@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import { FlatList,Dimensions,AppState, View, Text,StyleSheet, Alert } from 'react-native';
 import { TouchableHighlight,TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 
-import { LinearGradient } from 'expo-linear-gradient';
 const WIDTH=Dimensions.get('screen').width
 import {db,Home,Firebase} from '../../App'
 export default class ChatScreen extends PureComponent {
@@ -27,24 +26,16 @@ export default class ChatScreen extends PureComponent {
   this.state.items.push(data)
 
  })
-    AppState.addEventListener("change", this._handleAppStateChange);
+   
   }
 
   componentWillUnmount() {
     
    
-    AppState.removeEventListener("change", this._handleAppStateChange);
+   
   }
 
-  _handleAppStateChange = nextAppState => {
-    if (
-      this.state.appState.match(/inactive|background/) &&
-      nextAppState === "active"
-    ) {
-    this.setState({network:false})
-    }
-    this.setState({ appState: nextAppState });
-  };
+ 
   send=()=>{
     db.ref('messages').push({
       'username':this.state.cuser,
@@ -53,9 +44,7 @@ export default class ChatScreen extends PureComponent {
     //push('username'=this.props.username,'msg'=this.state.msg)
     
   }
-  render() {  if (this.state.network==false){
-      return (<Home username={this.state.cuser}/>)
-    }
+  render() {  
     return (
       <View style={styles.container}>
 <View style={styles.chats}>
