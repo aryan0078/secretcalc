@@ -5,8 +5,8 @@ import { TouchableHighlight,TextInput, TouchableOpacity } from 'react-native-ges
 
 
 const WIDTH=Dimensions.get('screen').width
-import {db,Home,Firebase} from '../../App'
-import { isFrontCameraAvailable } from 'expo/build/AR';
+import {db} from '../../App'
+import CalcButton from '../button'
 export default class ChatScreen extends PureComponent {
   constructor(props) {
     super(props);
@@ -17,6 +17,7 @@ export default class ChatScreen extends PureComponent {
        appState:AppState.currentState,
       network:true,
      items:[],
+     home:false
   
      
     };
@@ -32,7 +33,7 @@ export default class ChatScreen extends PureComponent {
  
 
  })
- console.log(this.state.data)
+ 
   }
 
   componentWillUnmount() {
@@ -52,11 +53,20 @@ export default class ChatScreen extends PureComponent {
 });
     //push('username'=this.props.username,'msg'=this.state.msg)
     this.setState({msg:''})
-    console.log(this.state.items)
+  }
+  nhome=()=>{
+    this.setState({home:true})
   }
   render() {  
+    if (this.state.home){
+      return(<CalcButton/>)
+    }
     return(
       <View style={styles.container}>
+        <View style={styles.nav}>
+          <TouchableOpacity style={styles.h} onPress={this.nhome}><Text style={{alignSelf:'center',color:'white'}}>Home </Text></TouchableOpacity>
+          
+        </View>
 <View style={styles.chats}>
   <FlatList
   
@@ -93,6 +103,25 @@ export default class ChatScreen extends PureComponent {
   }
 }
 const styles = StyleSheet.create({
+  h:{
+backgroundColor:'blue',
+width:80,
+marginLeft:10,
+borderRadius:25,
+textAlign:'center',
+height:40,
+justifyContent:'center',
+alignItems:'center'
+  },
+  nav:{
+    position:'absolute',
+    top:30,
+   
+    height:40,
+  width:WIDTH,
+   margin:-2,
+    
+  },
  time:{
    fontSize:15,
    position:'absolute',
