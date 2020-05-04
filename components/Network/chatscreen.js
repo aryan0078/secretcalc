@@ -2,8 +2,11 @@ import React, { PureComponent } from 'react';
 import { FlatList,Dimensions,AppState, View, Text,StyleSheet, Alert } from 'react-native';
 import { TouchableHighlight,TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 
+
+
 const WIDTH=Dimensions.get('screen').width
 import {db,Home,Firebase} from '../../App'
+import { isFrontCameraAvailable } from 'expo/build/AR';
 export default class ChatScreen extends PureComponent {
   constructor(props) {
     super(props);
@@ -14,7 +17,8 @@ export default class ChatScreen extends PureComponent {
        appState:AppState.currentState,
       network:true,
      items:[],
-     appState:AppState.currentState
+  
+     
     };
   }
  componentDidMount() {
@@ -37,16 +41,19 @@ export default class ChatScreen extends PureComponent {
 
  
   send=()=>{
+    var currentdate = new Date();
+    var ctime=currentdate.getHours()+":"+currentdate.getMinutes()
     db.ref('messages').push({
       'username':this.state.cuser,
-      'msg':this.state.msg
+      'msg':this.state.msg,
+      'time':ctime
 });
     //push('username'=this.props.username,'msg'=this.state.msg)
     this.setState({msg:''})
     console.log(this.state.items)
   }
   render() {  
-    return (
+    return(
       <View style={styles.container}>
 <View style={styles.chats}>
   <FlatList
@@ -60,9 +67,10 @@ export default class ChatScreen extends PureComponent {
       onHideUnderlay={separators.unhighlight}>
       <View style={styles.chatsbox}>
  
-        <Text style={styles.username}>{item['username']}</Text>
+        <Text style={styles.username}>{item['username']+' '}</Text>
       
         <Text style={styles.msg}>{item['msg']}</Text>
+  <Text style={styles.time}>{item['time']}</Text>
       </View>
     </TouchableHighlight>
   )}
@@ -83,7 +91,12 @@ export default class ChatScreen extends PureComponent {
   }
 }
 const styles = StyleSheet.create({
- 
+ time:{
+   fontSize:15,
+   position:'absolute',
+   right:5,
+   bottom:10
+ },
   username:{
    
     fontWeight: 'bold',
